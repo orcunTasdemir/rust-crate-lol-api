@@ -1,6 +1,6 @@
 use std::net::SocketAddr;
 
-use crate::model::Champions::ModelController;
+use crate::model::champions::ModelController;
 
 pub use self::error::{Error, Result};
 use axum::{routing::get_service, Router};
@@ -18,6 +18,7 @@ fn routes_static() -> Router {
 async fn main() -> Result<()> {
     //Initialize the model controller
     let mc = ModelController::new().await?;
+    // mc.print_champions();
 
     let routes_all = Router::new()
         .nest("/api", web::routes_champions::routes(mc.clone()))

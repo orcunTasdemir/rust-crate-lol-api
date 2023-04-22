@@ -1,2 +1,2 @@
-pub mod Champions;
-pub mod Items;
+pub mod champions;
+pub mod items;

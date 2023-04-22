@@ -7,8 +7,9 @@ use axum::{
 pub enum Error {
     ApiKeyWrongError,
     OtherApiSideError(reqwest::Error),
-    NoChampionWithIdFound(u64),
+    NoChampionWithNameFound(String),
     JsonError(serde_json::Error),
+    InvalidApiResponse,
 }
 pub type Result<T> = core::result::Result<T, Error>;
 
@@ -16,11 +17,12 @@ pub type Result<T> = core::result::Result<T, Error>;
 impl std::fmt::Display for Error {
     fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> core::result::Result<(), std::fmt::Error> {
         match self {
+            Self::InvalidApiResponse => write!(fmt, "Invalid API response:"),
             Self::OtherApiSideError(err) => write!(fmt, "Request failed: {}", err),
             Self::JsonError(err) => write!(fmt, "Request failed: {}", err),
             Self::ApiKeyWrongError => write!(fmt, "API key is incorrect"),
-            Self::NoChampionWithIdFound(id) => {
-                write!(fmt, "Request failed for Champion with id: {}", id)
+            Self::NoChampionWithNameFound(name) => {
+                write!(fmt, "Request failed for Champion with name: {}", name)
             }
         }
     }
